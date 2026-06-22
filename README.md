@@ -1,14 +1,27 @@
-# richardsimko/update-tag
+# GitHub Update Tag Action
+A GitHub action that simply tags the repository with the specified tag. If the tag exists it gets updated.
 
-Update the provided tag in the GitHub repo
+## Usage
+```yml
+name: Deploy
 
-Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at [https://github.com/richardsimko/update-tag](https://github.com/richardsimko/update-tag).
+on: [deployment]
 
-## Versions
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tag Repo
+        uses: richardsimko/update-tag@v1
+        with:
+          tag_name: name-of-tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
 
-| Version | Tag | Upstream commit |
-|---------|-----|-----------------|
-| v1.0.10 | [`v1.0.10`](https://github.com/chainguard-actions/richardsimko-update-tag/tree/v1.0.10) | [`3238705`](https://github.com/richardsimko/update-tag/commit/3238705f3a7780db3e35c9be48214eb90cf07992) |
+### Inputs
+
+- **tag_name** _(required)_ - The name of the tag you want to create or update.
 
 ## Privacy
 

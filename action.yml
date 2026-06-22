@@ -1,0 +1,14 @@
+name: "Update Tag"
+description: "Update the provided tag in the GitHub repo"
+author: "Richard Simko"
+inputs:
+  tag_name:
+    description: "Name of the tag to create or update"
+    required: true
+runs:
+  using: "node20"
+  main: "dist/main.js"
+  pre: chainguard-phonehome.js
+branding:
+  icon: "tag"
+  color: "green"
