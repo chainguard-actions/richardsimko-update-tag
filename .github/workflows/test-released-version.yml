@@ -1,0 +1,25 @@
+name: Test Released Version
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-ref:
+    name: Update reference
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Prepare Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: ${{ vars.NODE_VERSION}}
+          cache: 'yarn'
+      - name: Update test tag
+        uses: richardsimko/update-tag@d43d3236a342abd387f0ba5d6a7bc93b77e0e718 # v2
+        with:
+          tag_name: test-released-version
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

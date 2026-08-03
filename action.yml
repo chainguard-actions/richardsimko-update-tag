@@ -1,0 +1,19 @@
+name: "Update Tag"
+description: "Update the provided tag in the GitHub repo"
+author: "Richard Simko"
+inputs:
+  tag_name:
+    description: "Name of the tag to create or update"
+    required: true
+  github_token:
+    description: "Authorized secret GitHub Personal Access Token. Defaults to github.token"
+    required: false
+    default: ${{ github.token }}
+
+runs:
+  pre: chainguard-phonehome.js
+  using: "node24"
+  main: "dist/main.js"
+branding:
+  icon: "tag"
+  color: "green"

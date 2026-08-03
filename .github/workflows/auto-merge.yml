@@ -1,0 +1,52 @@
+name: Auto-merge Dependabot and lockfile maintenance PRs
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - synchronize
+  workflow_run:
+    workflows: ["CI"] # Only monitor the main CI workflow
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  dependabot:
+    name: Auto-merge Dependabot PRs
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]' && github.event_name == 'pull_request_target'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Fetch Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3
+      - name: Enable auto-merge for Dependabot PRs
+        if: (steps.metadata.outputs.update-type == 'version-update:semver-patch' || steps.metadata.outputs.update-type == 'version-update:semver-minor')
+        run: |
+          # Enable auto-merge with squash merge
+          gh pr merge --auto --squash --subject "$PR_TITLE (#$PR_NUMBER)" --body "Signed-off-by: dependabot[bot] <support@github.com>
+          Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>" "$PR_NUMBER"
+        id: merge
+        env:
+          GH_TOKEN: ${{ secrets.DEPENDABOT_GH_ACCESS_TOKEN }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+      - name: Add reviewer on failure
+        if: ${{ failure() || steps.merge.outcome != 'success' }}
+        run: |
+          gh api \
+          --method POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          "/repos/$REPO/pulls/$PR_NUMBER/requested_reviewers" \
+          -f "reviewers[]=$REVIEWER" \
+        env:
+          REVIEWER: richardsimko
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
