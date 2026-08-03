@@ -10,6 +10,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 |---------|-----|-----------------|
 | v1.0.10 | [`v1.0.10`](https://github.com/chainguard-actions/richardsimko-update-tag/tree/v1.0.10) | [`3238705`](https://github.com/richardsimko/update-tag/commit/3238705f3a7780db3e35c9be48214eb90cf07992) |
 | v1.0.9 | [`v1.0.9`](https://github.com/chainguard-actions/richardsimko-update-tag/tree/v1.0.9) | [`562dd25`](https://github.com/richardsimko/update-tag/commit/562dd25530c9ff239a83357b70d5270710285ec8) |
+| v3.0.0 | [`v3.0.0`](https://github.com/chainguard-actions/richardsimko-update-tag/tree/v3.0.0) | [`24fe62c`](https://github.com/richardsimko/update-tag/commit/24fe62c216198eb57283429200e63a06f62afe5b) |
 
 ## Privacy
 
